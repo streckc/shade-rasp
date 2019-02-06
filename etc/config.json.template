@@ -1,0 +1,7 @@
+{
+  "reverse": {
+    "user": "user",
+    "host": "hostname.domain.tld",
+    "key": "private_key_filename_in_etc_keys"
+  }
+}
