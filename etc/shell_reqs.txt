@@ -1,5 +1,4 @@
 jq
 ssh
 tee
-pidof
 python3

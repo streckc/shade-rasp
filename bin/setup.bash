@@ -6,6 +6,8 @@ main() {
 	log "Start."
 	setup_directories
 	check_requirements
+	check_config
+	create_crontab
 	log "Done."
 }
 
@@ -23,7 +25,7 @@ setup_directories() {
 	done
 
 	if [ -d "$ROOT_DIR/etc/keys" ]; then
-		log "Securing keys directory..."
+		log "  Securing keys directory..."
 		chmod 700 "$ROOT_DIR/etc/keys"
 	fi
 
@@ -38,11 +40,43 @@ check_requirements() {
 
 	if [ -n "$SHELL_REQS" ]; then
 		cat "$SHELL_REQS" | while read REQ; do
-			log "Checking for $REQ..."
-			require_value "$REQ" "$REQ"
+			log "  Checking for $REQ..."
+			require_value "$REQ" "$(which "$REQ")"
 		done
 	fi
 	exit_if_error
 }
 
+check_config() {
+	log "Checking config..."
+
+	local CONF="$ROOT_DIR/etc/config.json"
+
+	log "  ... location"
+	require_value "$ROOT_DIR/etc/config.json" "$(ls -d "$CONF" 2>/dev/null)"
+
+	log "  ... values"
+	require_value "reverse.user" "$(get_config_value "$CONF" ".reverse.user")"
+	require_value "reverse.host" "$(get_config_value "$CONF" ".reverse.host")"
+	require_value "reverse.key" "$(get_config_value "$CONF" ".reverse.key")"
+
+	exit_if_error
+}
+
+create_crontab() {
+	log "Creating crontab..."
+	local TEMPLATE="$ROOT_DIR/etc/crontab.template"
+	local CRONTAB="$ROOT_DIR/crontab"
+
+	if [ -f "$CRONTAB" ]; then
+		log "  Crontab exists, not replacing: $CRONTAB"
+	elif [ ! -f "$TEMPLATE" ]; then
+		log "  Template missing, not creating: $TEMPLATE"
+	else
+		cat "$TEMPLATE" | sed -e "s#__DIR__#$ROOT_DIR#g" > $CRONTAB
+		log "  Crontab created: $CRONTAB"
+	fi
+}
+
 main
+

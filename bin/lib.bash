@@ -6,6 +6,7 @@ log() {
 	local date=$(date +"%Y/%m/%d %H:%M:%S")
 	local script=$(basename "$0")
 	local log_file="$(dirname "$0")/../logs/shade_$(date +"%Y%m%d").log"
+	mkdir -p "$(dirname "$log_file")"
 	echo "$date $script $*" | tee -a "$log_file"
 }
 
@@ -13,7 +14,7 @@ get_config_value() {
 	local config="$1"
 	local program="$2"
 	local default="$3"
-	local value=$(jq -r "$program" "$config")
+	local value=$(jq -r "$program" "$config" 2>/dev/null)
 
 	if [ "$value" == "null" ]; then
 		value="$default"
@@ -28,7 +29,7 @@ require_value() {
 	local valid="$3"
 
 	if [ -z "$value" -o "X$value" == "Xnull" ]; then
-		log "ERROR: $name is required but has no value"
+		log "ERROR: $name is required."
 		_exit_code=$(($_exit_code + 1))
 	fi
 	if [ -n "$valid" ]; then
