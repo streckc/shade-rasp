@@ -1,3 +1,4 @@
+curl
 jq
 ssh
 tee

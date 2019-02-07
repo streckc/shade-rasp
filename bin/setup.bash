@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . "$(dirname "$0")/lib.bash"
+. "$(dirname "$0")/utils.bash"
 
 main() {
 	log "Start."
@@ -8,6 +9,7 @@ main() {
 	check_requirements
 	check_config
 	create_crontab
+	download_updated_mac_vendors
 	exit_if_error
 	log "Done."
 }
