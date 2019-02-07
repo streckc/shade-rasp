@@ -8,6 +8,7 @@ main() {
 	check_requirements
 	check_config
 	create_crontab
+	exit_if_error
 	log "Done."
 }
 
@@ -28,8 +29,6 @@ setup_directories() {
 		log "  Securing keys directory..."
 		chmod 700 "$ROOT_DIR/etc/keys"
 	fi
-
-	exit_if_error
 }
 
 check_requirements() {
@@ -44,7 +43,6 @@ check_requirements() {
 			require_value "$REQ" "$(which "$REQ")"
 		done
 	fi
-	exit_if_error
 }
 
 check_config() {
@@ -55,12 +53,14 @@ check_config() {
 	log "  ... location"
 	require_value "$ROOT_DIR/etc/config.json" "$(ls -d "$CONF" 2>/dev/null)"
 
+	log "  ... valid json"
+	require_value "jq compiles" "$(jq "." "$ROOT_DIR/etc/config.json" 2>/dev/null)"
+
 	log "  ... values"
 	require_value "reverse.user" "$(get_config_value "$CONF" ".reverse.user")"
 	require_value "reverse.host" "$(get_config_value "$CONF" ".reverse.host")"
 	require_value "reverse.key" "$(get_config_value "$CONF" ".reverse.key")"
 
-	exit_if_error
 }
 
 create_crontab() {
