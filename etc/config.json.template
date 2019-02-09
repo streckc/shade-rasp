@@ -1,7 +1,27 @@
 {
+  "api": {
+    "port": "8088"
+  },
+  "delay": 60,
+  "storage": "var/cache",
+  "environment": {
+    "interface": "wlan0"
+  },
   "reverse": {
     "user": "user",
     "host": "hostname.domain.tld",
-    "key": "private_key_filename_in_etc_keys"
+    "key": "private_key_filename_in_etc_keys",
+    "listen": "2022"
+  },
+  "sensors": {
+    "arp-scan": {
+      "active": true
+    },
+    "avahi-browse": {
+      "active": true
+    },
+    "nmap": {
+      "active": true
+    }
   }
 }

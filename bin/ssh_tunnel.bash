@@ -5,7 +5,6 @@
 ACTION="$1"
 
 CONF=$(ls -d "$ROOT_DIR/etc/config.json" 2>/dev/null)
-CONF=$(ls -d "$ROOT_DIR/etc/config.json" 2>/dev/null)
 SSH=$(which ssh)
 USER=$(get_config_value "$CONF" ".reverse.user")
 KEY=$(get_config_value "$CONF" ".reverse.key")
