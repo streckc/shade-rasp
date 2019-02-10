@@ -1,1 +1,2 @@
 */5 * * * * __DIR__/bin/ssh_tunnel.bash check >/dev/null
+*/5 * * * * __DIR__/bin/run_sensors.bash check >/dev/null
