@@ -12,19 +12,23 @@ def test_get_ip_address():
 
 
 def test_compute_sensor_command():
-    command = ['sudo', 'nmap', '-T4', '-A', '-v', '-oX', '-']
+    base_command = ['sudo', 'nmap', '-oX', '-', '-sS']
+    all_command = ['sudo', 'nmap', '-oX', '-', '-T4', '-A']
 
     ip_addr = _get_ip_address()
-    assert _compute_sensor_command() == command + ['{}/24'.format(ip_addr)]
+    assert _compute_sensor_command() == base_command + ['{}/24'.format(ip_addr)]
 
     config = { 'ip_addr': '192.168.1.100' }
-    assert _compute_sensor_command(config, True) == command + ['192.168.1.100/24']
+    assert _compute_sensor_command(config, True) == base_command + ['192.168.1.100/24']
 
     config = { 'ip_addr': '192.168.1.100', 'mask': '26' }
-    assert _compute_sensor_command(config, True) == command + ['192.168.1.100/26']
+    assert _compute_sensor_command(config, True) == base_command + ['192.168.1.100/26']
 
     config = { 'ip_addr': '8.8.8.8', 'mask': '8' }
-    assert _compute_sensor_command(config) == command + ['192.168.1.100/26']
+    assert _compute_sensor_command(config) == base_command + ['192.168.1.100/26']
+
+    config = { 'ip_addr': '172.16.12.34', 'mask': '16', 'level': 'all' }
+    assert _compute_sensor_command(config, True) == all_command + ['172.16.12.34/16']
 
 
 def test_parse_nmap_output():

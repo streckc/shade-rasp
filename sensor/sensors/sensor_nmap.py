@@ -31,15 +31,12 @@ def _compute_sensor_command(config={}, no_cache=False):
 
     #nmap -T4 -A -v -oG - 192.168.1.0/24
     if _sensor_command is None or no_cache:
-        command = [
-            'sudo',
-            'nmap',
-            '-T4',
-            '-A',
-            '-v',
-            '-oX',
-            '-'
-        ]
+        command = ['sudo', 'nmap', '-oX', '-']
+
+        if config.get('level', 'basic') == 'all':
+            command.extend(['-T4', '-A'])
+        else:
+            command.extend(['-sS'])
 
         ip_addr = config.get('ip_addr', _get_ip_address())
         mask = config.get('mask', '24')
@@ -88,8 +85,8 @@ def _parse_nmap_output(output):
             for prop in _port_props:
                 if prop in service:
                     port_item[prop] = service[prop]
-                else:
-                    port_item[prop] = None
+                #else:
+                #    port_item[prop] = None
 
             data.append({
                 'ip_addr': ip_addr,
