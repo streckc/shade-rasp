@@ -50,9 +50,9 @@ start_sensors() {
 
 	log "Starting sensors."
 	nohup $SENSORS \
-		--log "$ROOT_DIR/logs/shade___DATE__.log" \
+		--log "$ROOT_DIR/var/shade___DATE__.log" \
 		--config "$ROOT_DIR/etc/config.json" \
-		>/dev/null 2>>"$ROOT_DIR/logs/error.log" &
+		>/dev/null 2>>"$ROOT_DIR/var/error.log" &
 
 	sleep 1
 

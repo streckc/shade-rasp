@@ -17,7 +17,7 @@ main() {
 setup_directories() {
 	log "Making directories..."
 
-	for DIR in logs var etc/keys; do
+	for DIR in var etc/keys; do
 		if [ ! -d "$ROOT_DIR/$DIR" ]; then
 			log "  ... $ROOT_DIR/$DIR"
 			mkdir -p "$ROOT_DIR/$DIR"

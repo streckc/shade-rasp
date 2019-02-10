@@ -5,7 +5,7 @@ export _exit_code=0
 log() {
 	local date=$(date +"%Y/%m/%d %H:%M:%S")
 	local script=$(basename "$0")
-	local log_file="$(dirname "$0")/../logs/shade_$(date +"%Y-%m-%d").log"
+	local log_file="$(dirname "$0")/../var/shade_$(date +"%Y-%m-%d").log"
 	mkdir -p "$(dirname "$log_file")"
 	echo "$date $script $*" | tee -a "$log_file"
 }
