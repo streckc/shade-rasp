@@ -56,7 +56,7 @@ def _parse_arp_scan_output(output):
             data.append({
                 'ip_addr': fields[0],
                 'mac_addr': fields[1],
-                'manufacturer': fields[2]
+                'mac_manu': fields[2]
             })
 
     return data
