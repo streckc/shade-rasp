@@ -1,5 +1,8 @@
+arp-scan
+avahi-browse
 curl
 jq
+nmap
+python3
 ssh
 tee
-python3
