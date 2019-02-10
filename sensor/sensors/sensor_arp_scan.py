@@ -19,12 +19,12 @@ def arp_scan_sensor(config):
     }
 
 
-def _compute_sensor_command():
+def _compute_sensor_command(config={}, no_cache=False):
     global _sensor_command
 
     command = _sensor_command
 
-    if command is None:
+    if command is None or no_cache:
         command = [
             'sudo',
             'arp-scan',
@@ -48,6 +48,10 @@ def _compute_sensor_command():
 
 def _parse_arp_scan_output(output):
     data = []
+
+    if not output:
+        return data
+
     lines = output.strip().split('\n')
 
     for line in lines:

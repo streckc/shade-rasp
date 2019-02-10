@@ -1,0 +1,19 @@
+Interface: wlan0, datalink type: EN10MB (Ethernet)
+Starting arp-scan 1.9 with 256 hosts (http://www.nta-monitor.com/tools/arp-scan/)
+192.168.1.1	08:d5:9d:8d:a9:72	(Unknown)
+192.168.1.31	00:14:d1:b1:11:b6	TRENDnet
+192.168.1.41	f4:4d:30:69:48:0b	Elitegroup Computer Systems Co.,Ltd.
+192.168.1.42	f4:4d:30:69:48:0b	Elitegroup Computer Systems Co.,Ltd.
+192.168.1.50	f4:4d:30:69:48:0b	Elitegroup Computer Systems Co.,Ltd.
+192.168.1.70	70:26:05:6a:e0:c3	(Unknown)
+192.168.1.72	00:18:61:27:89:61	Ooma, Inc.
+192.168.1.74	b0:5a:da:70:db:df	Hewlett Packard
+192.168.1.79	e0:c7:67:56:a3:45	Apple, Inc.
+192.168.1.111	28:11:a5:11:92:09	(Unknown)
+192.168.1.73	c8:f6:50:5c:a9:40	Apple, Inc.
+192.168.1.83	b8:d7:af:65:3b:08	Murata Manufacturing Co., Ltd.
+192.168.1.113	dc:08:0f:c4:bc:71	(Unknown)
+192.168.1.92	f0:6e:0b:d4:d0:89	(Unknown)
+
+14 packets received by filter, 0 packets dropped by kernel
+Ending arp-scan 1.9: 256 hosts scanned in 27.895 seconds (9.18 hosts/sec). 14 responded
