@@ -40,7 +40,7 @@ def _scheduler(args):
 
     while _scheduler_run:
         while _scheduler_run and datetime.now().time().minute == lastload:
-            sleep(5)
+            sleep(1)
 
         if _scheduler_run:
             _thread_lock.acquire()

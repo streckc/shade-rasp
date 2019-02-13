@@ -5,6 +5,8 @@ import json
 import signal
 import sys
 
+from copy import deepcopy
+
 from os import path
 
 from time import time
@@ -84,17 +86,19 @@ def schedule_sensors(sensors):
             sensor['name'] = key
 
             if 'schedule' in sensor:
+                run_sensor = deepcopy(sensor)
+                run_sensor['run'] = sensor_list[key]
                 result = schedule_job(
                     sensor['schedule'],
                     sensor['name'],
-                    sensor_list[key],
-                    sensor
+                    report_sensor_run,
+                    run_sensor
                 )
                 if result:
                     num_jobs += 1
                     output('Sensor scheduled: {}'.format(json.dumps(sensor, sort_keys=True)))
                 else:
-                    output('Sensor not scheduled: {}'.format(json.dumps(sensor, sort_keys=True)))
+                    output('ERROR: Sensor not scheduled: {}'.format(json.dumps(sensor, sort_keys=True)))
             else:
                 output('Sensor not activated: {}'.format(json.dumps(sensor, sort_keys=True)))
         else:
@@ -149,10 +153,16 @@ def main(sys_args):
         try:
             while True:
                 data = run_pending_jobs()
-                for result in data:
-                    store_data(result)
+                if data['jobs'] > 0:
+                    output('{} jobs run in {} seconds'.format(data['jobs'], data['time']))
+                    for result in data['data']:
+                        output('  .. {}: {}s, {} records'.format(
+                            result['name'],
+                            int(result['end'] - result['start']),
+                            len(result['data'])))
+                        store_data(result)
     #            send_data()
-                sleep(5)
+                sleep(1)
         finally:
             close_cache()
             stop_scheduler()
