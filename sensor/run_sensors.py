@@ -15,6 +15,11 @@ from sensors.config import set_config
 from sensors.config import update_config
 from sensors.config import get_config_value
 
+from sensors.cron import start_scheduler
+from sensors.cron import stop_scheduler
+from sensors.cron import schedule_job
+from sensors.cron import run_pending_jobs
+
 from sensors.reporting import report_sensor_run
 
 from sensors.storage import init_cache
@@ -37,7 +42,6 @@ _log_key = path.basename(__file__)
 _log_file_template = False
 set_config({
     'api': { 'port': 8088 },
-    'delay': 60,
     'environment': {
         'root': path.dirname(path.dirname(__file__))
     }
@@ -72,48 +76,31 @@ def read_config(filename):
     update_config(loaded)
 
 
-def sort_by_priority(elem):
-    return elem.get('priority', 999)
-
-
-def get_active_sensors(sensors):
-    run_list = []
-
+def schedule_sensors(sensors):
+    num_jobs = 0
     for key in sensors:
         if key in sensor_list:
             sensor = sensors[key]
-            sensor['active'] = sensor.get('active', False)
             sensor['name'] = key
 
-            if 'priority' not in sensor:
-                sensor['priority'] = 999
-
-            if sensors[key].get('active', False):
-                output('Sensor activated: {}'.format(json.dumps(sensor, sort_keys=True)))
-                sensor['run'] = sensor_list[key]
-                run_list.append(sensor)
+            if 'schedule' in sensor:
+                result = schedule_job(
+                    sensor['schedule'],
+                    sensor['name'],
+                    sensor_list[key],
+                    sensor
+                )
+                if result:
+                    num_jobs += 1
+                    output('Sensor scheduled: {}'.format(json.dumps(sensor, sort_keys=True)))
+                else:
+                    output('Sensor not scheduled: {}'.format(json.dumps(sensor, sort_keys=True)))
             else:
                 output('Sensor not activated: {}'.format(json.dumps(sensor, sort_keys=True)))
         else:
             output('ERROR: Sensor not found: {}'.format(key))
 
-    return sorted(run_list, key=sort_by_priority)
-
-
-def run_sensors(sensors):
-    data = {}
-
-    for sensor in sensors:
-        data = report_sensor_run(sensor)
-        
-        if data['data']:
-            store_data(data)
-        elif data['error']:
-            output('ERROR: {}'.format(data['error']), sensor['name'])
-
-        output('Run {:.3f}s'.format(data['end'] - data['start']), sensor['name'])
-
-    return data
+    return num_jobs
 
 
 # Command line
@@ -130,8 +117,6 @@ def parse_args(sys_args):
 
     parser.add_argument('-c', '--config', nargs=1, type=str, default='etc/config.json',
                         help='config file location')
-    parser.add_argument('-d', '--delay', nargs=1, type=int, default=-1,
-                        help='delay between sensor polls')
     parser.add_argument('-l', '--log', nargs=1, default=False,
                         help='output to log file with format')
 
@@ -154,20 +139,23 @@ def main(sys_args):
 
     output('Starting {}'.format(json.dumps(get_config())))
 
-    delay = int(get_config_value('delay'))
-
     init_cache(get_config_value('storage', 'var/cache'))
 
-    run_list = get_active_sensors(get_config_value('sensors', []))
+    num_jobs = schedule_sensors(get_config_value('sensors', []))
+    output('Jobs scheduled: {}'.format(num_jobs))
 
-    if len(run_list) > 0:
+    if num_jobs > 0:
+        start_scheduler()
         try:
             while True:
-                run_sensors(run_list)
-                send_data()
-                sleep(delay)
+                data = run_pending_jobs()
+                for result in data:
+                    store_data(result)
+    #            send_data()
+                sleep(5)
         finally:
             close_cache()
+            stop_scheduler()
             output('Shutdown')
     else:
         output('No sensors found to run.')
