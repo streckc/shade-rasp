@@ -49,7 +49,7 @@ start_sensors() {
 	local PID=""
 
 	log "Starting sensors."
-	nohup $SENSORS \
+	nohup sudo $SENSORS \
 		--log "$ROOT_DIR/var/shade___DATE__.log" \
 		--config "$ROOT_DIR/etc/config.json" \
 		>/dev/null 2>>"$ROOT_DIR/var/error.log" &
@@ -69,7 +69,7 @@ stop_sensors() {
 	local PID=$(get_sensors_pid)
 
 	if [ -n "$PID" ]; then
-		kill $PID
+		sudo kill $PID
 		log "Sensors stopped. ($PID)"
 	else
 		log "No sensors found to stop."

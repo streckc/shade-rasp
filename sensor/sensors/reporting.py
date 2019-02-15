@@ -17,7 +17,8 @@ def report_sensor_run(config):
         'start': start,
         'end': end,
         'data': ret.get('data', []),
-        'error': ret.get('error', None)
+        'error': ret.get('error', None),
+        'except': ret.get('except', None)
     }
 
 
