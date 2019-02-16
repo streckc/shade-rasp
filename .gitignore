@@ -1,6 +1,8 @@
 # Project specific
 config.json
 etc/keys/*
+etc/mac-vendor.txt
+crontab
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
