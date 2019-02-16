@@ -1,4 +1,6 @@
 
+from .config import get_config_value
+
 from .running import run_os_command
 
 _sensor_command = None
@@ -6,14 +8,16 @@ _sensor_command = None
 
 def avahi_browse_sensor(config):
     command = _compute_sensor_command()
+    timeout = config.get('timeout', get_config_value('timeout', 600))
 
-    results = run_os_command(command)
+    results = run_os_command(command, timeout)
 
     data = _parse_avahi_browse_output(results['output'])
 
     return {
         'data': data,
-        'error': results['error']
+        'error': results['error'],
+        'except': results['except']
     }
 
 

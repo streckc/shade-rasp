@@ -8,14 +8,16 @@ _sensor_command = None
 
 def arp_scan_sensor(config):
     command = _compute_sensor_command()
+    timeout = config.get('timeout', get_config_value('timeout', 600))
 
-    results = run_os_command(command)
+    results = run_os_command(command, timeout)
 
     data = _parse_arp_scan_output(results['output'])
 
     return {
         'data': data,
-        'error': results['error']
+        'error': results['error'],
+        'except': results['except']
     }
 
 
@@ -26,7 +28,6 @@ def _compute_sensor_command(config={}, no_cache=False):
 
     if command is None or no_cache:
         command = [
-            'sudo',
             'arp-scan',
             '--retry=8',
             '--ignoredups',

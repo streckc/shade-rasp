@@ -13,14 +13,16 @@ _port_props = ('name', 'product', 'version', 'tunnel', 'ostype', 'extrainfo')
 
 def nmap_sensor(config):
     command = _compute_sensor_command()
+    timeout = config.get('timeout', get_config_value('timeout', 600))
 
-    results = run_os_command(command)
+    results = run_os_command(command, timeout)
 
     data = _parse_nmap_output(results['output'])
 
     return {
         'data': data,
-        'error': results['error']
+        'error': results['error'],
+        'except': results['except']
     }
 
 
@@ -31,7 +33,7 @@ def _compute_sensor_command(config={}, no_cache=False):
 
     #nmap -T4 -A -v -oG - 192.168.1.0/24
     if _sensor_command is None or no_cache:
-        command = ['sudo', 'nmap', '-oX', '-']
+        command = ['nmap', '-oX', '-']
 
         if config.get('level', 'basic') == 'all':
             command.extend(['-T4', '-A'])

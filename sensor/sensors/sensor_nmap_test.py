@@ -12,8 +12,8 @@ def test_get_ip_address():
 
 
 def test_compute_sensor_command():
-    base_command = ['sudo', 'nmap', '-oX', '-', '-sS']
-    all_command = ['sudo', 'nmap', '-oX', '-', '-T4', '-A']
+    base_command = ['nmap', '-oX', '-', '-sS']
+    all_command = ['nmap', '-oX', '-', '-T4', '-A']
 
     ip_addr = _get_ip_address()
     assert _compute_sensor_command() == base_command + ['{}/24'.format(ip_addr)]

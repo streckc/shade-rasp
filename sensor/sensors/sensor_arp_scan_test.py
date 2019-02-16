@@ -8,7 +8,7 @@ from .sensor_arp_scan import _parse_arp_scan_output
 
 
 def test_compute_sensor_command():
-    base_command = ['sudo', 'arp-scan', '--retry=8', '--ignoredups', '--localnet']
+    base_command = ['arp-scan', '--retry=8', '--ignoredups', '--localnet']
 
     assert _compute_sensor_command() == base_command
 
