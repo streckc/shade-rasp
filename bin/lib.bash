@@ -7,7 +7,7 @@ log() {
 	local script=$(basename "$0")
 	local log_file="$(dirname "$0")/../var/shade_$(date +"%Y-%m-%d").log"
 	mkdir -p "$(dirname "$log_file")"
-	echo "$date $script $*" | tee -a "$log_file"
+	echo "$date $script $*" | sudo tee -a "$log_file"
 }
 
 get_config_value() {
