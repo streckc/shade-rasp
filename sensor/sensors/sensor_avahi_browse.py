@@ -15,6 +15,7 @@ def avahi_browse_sensor(config):
     data = _parse_avahi_browse_output(results['output'])
 
     return {
+        'type': 'net',
         'data': data,
         'error': results['error'],
         'except': results['except']

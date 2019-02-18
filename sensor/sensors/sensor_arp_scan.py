@@ -15,6 +15,7 @@ def arp_scan_sensor(config):
     data = _parse_arp_scan_output(results['output'])
 
     return {
+        'type': 'net',
         'data': data,
         'error': results['error'],
         'except': results['except']
