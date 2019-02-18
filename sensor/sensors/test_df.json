@@ -1,0 +1,16 @@
+[
+  {
+    "filesystem": "/dev/root",
+    "mounted": "/",
+    "kb": 3761984,
+    "used": 1372400,
+    "avail": 2204064
+  },
+  {
+    "filesystem": "/dev/mmcblk0p1",
+    "mounted": "/boot",
+    "kb": 41853,
+    "used": 21471,
+    "avail": 20382
+  }
+]

@@ -9,6 +9,7 @@ sensor_list = {
     'arp-scan': arp_scan_sensor,
     'avahi-browse': avahi_browse_sensor,
     'nmap': nmap_sensor,
-    'vmstat': vmstat_sensor
+    'vmstat': vmstat_sensor,
+    'df': df_sensor
 }
 
