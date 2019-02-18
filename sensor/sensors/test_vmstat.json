@@ -1,0 +1,14 @@
+[
+  {
+    "procs_run": 0,
+    "procs_sleep": 0,
+    "mem_swpd": 0,
+    "mem_free": 208344,
+    "mem_buff": 48356,
+    "mem_cache": 153572,
+    "cpu_user": 0,
+    "cpu_sys":  1,
+    "cpu_idle": 94,
+    "cpu_wait": 2
+  }
+]
