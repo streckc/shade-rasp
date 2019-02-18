@@ -12,14 +12,14 @@ def report_sensor_run(config):
 
     end = report_time()
 
-    return {
+    report = {
         'name': config.get('name', 'unknown_sensor'),
         'start': start,
-        'end': end,
-        'data': ret.get('data', []),
-        'error': ret.get('error', None),
-        'except': ret.get('except', None)
+        'end': end
     }
+    report.update(ret)
+
+    return report
 
 
 def report_time():
