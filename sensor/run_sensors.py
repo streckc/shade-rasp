@@ -156,14 +156,14 @@ def main(sys_args):
                 if data['jobs'] > 0:
                     output('{} jobs run in {} seconds'.format(data['jobs'], data['time']))
                     for result in data['data']:
-                        if 'except' in result and result['except']:
+                        if 'exception' in result and result['exception']:
                             output('  .. {}: ERROR: {}'.format(
                                 result['name'],
-                                result['except']))
+                                result['exception']))
                         else:
                             output('  .. {}: {}s, {} records'.format(
                                 result['name'],
-                                int(result['end'] - result['start']),
+                                int(result['end_ts'] - result['start_ts']),
                                 len(result['data'])))
 
                         store_data(result)

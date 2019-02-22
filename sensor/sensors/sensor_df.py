@@ -16,7 +16,7 @@ def df_sensor(config):
         'type': 'sys',
         'data': data,
         'error': results['error'],
-        'except': results['except']
+        'exception': results['exception']
     }
 
 

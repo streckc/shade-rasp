@@ -16,4 +16,4 @@ def run_os_command(command, timeout=600):
     except TimeoutExpired as err:
         exception = 'subprocess timed out ({}s)'.format(timeout)
 
-    return { 'output': output, 'error': error, 'except': exception }
+    return { 'output': output, 'error': error, 'exception': exception }

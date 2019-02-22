@@ -23,7 +23,7 @@ def nmap_sensor(config):
         'type': 'net',
         'data': data,
         'error': results['error'],
-        'except': results['except']
+        'exception': results['exception']
     }
 
 

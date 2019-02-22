@@ -14,8 +14,8 @@ def report_sensor_run(config):
 
     report = {
         'name': config.get('name', 'unknown_sensor'),
-        'start': start,
-        'end': end
+        'start_ts': start,
+        'end_ts': end
     }
     report.update(ret)
 
